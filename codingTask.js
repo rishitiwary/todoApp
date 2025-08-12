@@ -1,6 +1,7 @@
 
 // Task 1
 
+
 // This function finds the length of the longest increasing subsequence (LIS) in an array of numbers.
 function lengthOfLIS(nums) {
   if (nums.length === 0) return 0;
