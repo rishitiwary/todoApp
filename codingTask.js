@@ -3,23 +3,44 @@
 
 
 // This function finds the length of the longest increasing subsequence (LIS) in an array of numbers.
-function lengthOfLIS(nums) {
-  if (nums.length === 0) return 0;
-  const dp = new Array(nums.length).fill(1);
-  for (let i = 1; i < nums.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (nums[i] > nums[j]) {
-        dp[i] = Math.max(dp[i], dp[j] + 1);
-      }
+function findLIS(nums) {
+    if (nums.length === 0) {
+        return [];
     }
-  }
-  return Math.max(...dp);
+    
+    const dp = new Array(nums.length).fill(1);
+    const prev = new Array(nums.length).fill(null);
+    let maxLength = 1;
+    let endIndex = 0;
+    
+    for (let i = 1; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[i] > nums[j] && dp[j] + 1 > dp[i]) {
+                dp[i] = dp[j] + 1;
+                prev[i] = j;
+            }
+        }
+        if (dp[i] > maxLength) {
+            maxLength = dp[i];
+            endIndex = i;
+        }
+    }
+    
+    // Reconstruct the subsequence
+    const lis = [];
+    let currentIndex = endIndex;
+    while (currentIndex !== null) {
+        lis.unshift(nums[currentIndex]);
+        currentIndex = prev[currentIndex];
+    }
+    
+    return lis;
 }
 
-const numss2 = [0, 1, 0, 3, 2, 3];
-const results2 = lengthOfLIS(numss2);
-console.log(`The length of the longest increasing subsequence for [${numss2}] is: ${results2}`); // Expected output: 4
-
+const nums = [10, 9, 2, 5, 3, 7, 101, 18];
+const longestSubsequence = findLIS(nums);
+console.log(`The longest increasing subsequence is: [${longestSubsequence}]`);
+console.log(`Its length is: ${longestSubsequence.length}`);
 
 // Task2
 // This function finds two indices of numbers in an array that add up to a given target.
